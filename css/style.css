@@ -1,0 +1,78 @@
+body {
+  background-image: url(/img/6.jpg);
+  background-size: cover;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  resize: both;
+  position: relative;
+  text-align: center;
+}
+
+table {
+  margin-top: 100px;
+  margin: auto;
+}
+h1 {
+  color: rgb(255, 244, 199);
+  text-shadow: 2px 2px darkgray;
+  font-family: fantasy;
+  -webkit-text-stroke: 1px rgb(71, 8, 8);
+  font-size: 50px;
+}
+
+.space {
+  background-color: rgb(236, 213, 213, 0.05);
+}
+
+.cell {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+}
+
+.ground {
+  background-color: burlywood;
+}
+
+.score {
+  color: rgb(253, 14, 6);
+  font-family: monospace;
+  -webkit-text-stroke: 1px rgb(71, 8, 8);
+  font-size: 40px;
+  margin-bottom: 5px;
+}
+
+.button {
+  height: 40px;
+  width: 80px;
+  right: auto;
+  color: black;
+}
+
+.restart {
+  display: none;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  font-size: 25px;
+  letter-spacing: 2px;
+  word-spacing: 2px;
+  color: #cf1f1faf;
+  -webkit-text-stroke: 1px rgb(255, 0, 0);
+  font-weight: normal;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+}
+
+.wall {
+  background-color: rgba(238, 16, 16, 0.05);
+}
+
+.play {
+  height: 40px;
+  width: 80px;
+  right: auto;
+  color: black;
+}
