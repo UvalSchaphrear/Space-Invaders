@@ -5,10 +5,10 @@ const ALIENS_ROW_LENGTH = 9;
 const ALIENS_ROW_COUNT = 3;
 const HERO = '🤘';
 const ALIEN = '🐙';
-const LASER = '❗';
 const GROUND = 'GROUND';
 const SPACE = 'SPACE';
 const WALL = 'WALL';
+var LASER = '❗';
 
 // Matrix of cell objects. e.g.: {type: SKY, gameObject: ALIEN}
 var gBoard;
@@ -27,7 +27,6 @@ function startGame() {
 
 // Called when game loads
 function init() {
-  // gGame.isOn = true;
   clearInterval(gIntervalAliens);
   gHero.pos = { i: 12, j: 5 };
   gScore = 0;
@@ -40,16 +39,7 @@ function init() {
   hideModal();
   var elPlay = document.querySelector('.play');
   elPlay.style.display = 'block';
-  // clearInterval(gGoLeft);
-  // clearInterval(gGoRight);
-
-  // console.log(gGame.aliensCount);
-  // {
-  //   (gAliens[0].i = 3), (gAliens[0].j = 9);
-  // }
-  // updateCell()
-
-  // console.table(gBoard);
+  console.log(gIsSuper);
 }
 
 function hideModal() {

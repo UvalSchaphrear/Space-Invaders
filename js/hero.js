@@ -1,18 +1,33 @@
 'use strict';
-const LASER_SPEED = 80;
+var LASER_SPEED = 80;
 var gLaserInterval;
 var gHero = { pos: { i: 12, j: 5 }, isShoot: false };
 var gLaserCount = -1;
 var gLaserPos = [];
 var gIsNeighborsKill = false;
+var gIsSuper = false;
+var gSuperCount = 4;
 // creates the hero and place it on board
 function createHero(board) {
   board[gHero.pos.i][gHero.pos.j].gameObject = HERO;
   // updateCell(gHero.pos, HERO);
 }
 
+function isSuperMode() {
+  LASER_SPEED = 40;
+  if ((gBoard[gHero.pos.i][gHero.pos.j].gameObject = HERO)) {
+    gBoard[gHero.pos.i][gHero.pos.j].gameObject = SUPER;
+  }
+
+  if (!gIsSuper) {
+    // gIsSuper = false;
+    return (LASER_SPEED = 80);
+  }
+}
+
 // Handle game keys
 function onKeyDown(ev) {
+  if (!gGame.isOn) return;
   var j = gHero.pos.j;
   switch (ev.key) {
     case 'ArrowLeft':
@@ -29,15 +44,23 @@ function onKeyDown(ev) {
       break;
     case ' ':
       shoot();
+      break;
     case 'n':
       gIsNeighborsKill = true;
+      break;
+    case 'x':
+      gIsSuper = true;
+      console.log(gIsSuper);
       break;
   }
   // return moveHero(moveTo);
 }
 
+// console.log(gIsNeighborsKill);
+
 // Move the hero right (1) or left (-1)
 function moveHero(dir) {
+  console.log(gIsSuper);
   if (!gGame.isOn) return;
   if (dir < 1 || dir > gBoard.length - 2) return;
   gBoard[gHero.pos.i][gHero.pos.j].gameObject = null;
@@ -47,30 +70,23 @@ function moveHero(dir) {
   gHero.pos.j = dir;
 }
 
-function blowUpNgs(cellI, cellJ, board) {
-  // console.log(cellI);
-  // console.log(cellJ);
-  // console.log(board);
-  for (var i = cellI - 1; i <= cellI + 1; i++) {
-    if (i < 0 || i >= board.length) continue;
-    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
-      if (i === cellI && j === cellJ) continue;
-      if (j < 0 || j >= board[i].length) continue;
-      if (board[i][j].gameObject === ALIEN) {
-        // console.log(board[i][j]);
-        board[i][j].gameObject === null;
-        // renderBoard(gBoard);
-      }
-    }
-    // console.table(gBoard);
-  }
-  gIsNeighborsKill = false;
-}
-
 // Sets an interval for shutting (blinking) the laser up towards aliens
 function shoot() {
+  console.log(LASER_SPEED);
   if (gHero.isShoot) return;
   if (!gGame.isOn) return;
+  if (gIsSuper) {
+    LASER_SPEED = 40;
+    LASER = '❕';
+    gSuperCount--;
+    console.log(gSuperCount);
+    console.log(LASER_SPEED);
+    if (!gSuperCount) {
+      gIsSuper = false;
+      LASER_SPEED = 80;
+      LASER = '❗';
+    }
+  }
   gLaserInterval = setInterval(blinkLaser, LASER_SPEED, gHero.pos);
   gHero.isShoot = true;
 }
@@ -86,6 +102,7 @@ function blinkLaser(pos) {
 
   if (gBoard[nextLaserPos.i][nextLaserPos.j].gameObject === ALIEN) {
     clearInterval(gLaserInterval);
+    gGame.aliensCount--;
     gBoard[prevLaserPos.i][prevLaserPos.j].gameObject = null;
 
     handleAlienHit(nextLaserPos);

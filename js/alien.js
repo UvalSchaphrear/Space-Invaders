@@ -1,11 +1,8 @@
 'use strict';
-const ALIEN_SPEED = 800;
+const ALIEN_SPEED = 900;
 var gIntervalAliens;
-var gAliens = [];
 var gLeftCount = 0;
-// var gAliensMove = [];
-// var gGoRight;
-// var gGoLeft;
+var gKillCount = 0;
 
 // The following two variables represent the part of the matrix (some rows)
 // that we should shift (left, right, and bottom)
@@ -23,7 +20,6 @@ function createAliens(board, startIdx, endIdx) {
       if (i < startIdx + 1 && j > endIdx) {
         currCell.gameObject = ALIEN;
         // updateCell({ i, j }, ALIEN);
-        gAliens.push({ i, j });
         gGame.aliensCount += 1;
       }
     }
@@ -32,30 +28,37 @@ function createAliens(board, startIdx, endIdx) {
 }
 
 function handleAlienHit(pos) {
-  console.log(gIsNeighborsKill);
+  // console.log(gIsNeighborsKill);
+  // console.log(gGame.aliensCount);
   updateScore(10);
   gLaserPos = [];
   gLaserCount = -1;
   clearInterval(gLaserInterval);
   gHero.isShoot = false;
   gBoard[pos.i][pos.j].gameObject = null;
-  gBoard[pos.i][pos.j].deadAlien = true;
+  // gBoard[pos.i][pos.j].deadAlien = true;
   updateCell({ i: pos.i, j: pos.j });
   if (gIsNeighborsKill) {
     blowUpNgs(pos.i, pos.j, gBoard);
   }
 
-  // for (var i = 0; i < gAliens.length; i++) {
-  //   var currAlien = gAliens[i];
-  //   if (currAlien.i === pos.i && currAlien.j === pos.j) {
-  //     // console.log(currAlien);
-  //     gAliens.splice(gAliens.indexOf(currAlien), 1);
-  //     gGame.aliensCount -= 1;
-  //   }
-  // }
-  // console.log(gGame.aliensCount);
-  // console.log(gAliens);
   if (!gGame.aliensCount) gameOver(true);
+}
+
+function blowUpNgs(cellI, cellJ, board) {
+  console.log(gIsNeighborsKill);
+  for (var i = cellI - 1; i <= cellI + 1; i++) {
+    if (i < 0 || i >= board.length) continue;
+    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+      if (i === cellI && j === cellJ) continue;
+      if (j < 0 || j >= board[i].length) continue;
+      if (board[i][j].gameObject === ALIEN) {
+        board[i][j].gameObject = null;
+      }
+    }
+    // console.table(gBoard);
+  }
+  gIsNeighborsKill = false;
 }
 
 function shiftBoardLeft(board, fromI, toI) {
@@ -140,13 +143,9 @@ function shiftBoardDown(board, fromI, toI) {
           gAliensTopRowIdx,
           gAliensBottomRowIdx
         );
-        // var nextCell = getElCell({ i: i, j: j });
-        // if (nextCell.innerText === ALIEN) {
-        //   updateCell({ i: i - 2, j: j });
-        //   updateCell({ i: i + 1, j: j }, ALIEN);
+
         renderBoard(gBoard);
       }
-      // console.log(nextCell);
     }
   }
 
@@ -161,78 +160,19 @@ function moveAliens() {
   // gGame.isOn = true;
   if (!gGame.isOn) return;
 
-  // // gLeftCount++;
-  // // console.log(gLeftCount);
-  // if (gIsAlienFreeze) return;
-  // // shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);'
-  // if (dir === 1) {
-  //   // console.log(gAliensTopRowIdx, gAliensBottomRowIdx);
-  //   clearInterval(gGoRight);
-  //   gGoLeft = setInterval(
-  //     shiftBoardLeft,
-  //     ALIEN_SPEED,
-  //     gBoard,
-  //     gAliensTopRowIdx,
-  //     gAliensBottomRowIdx
-  //   );
-  // }
-  // if (dir === 2) {
-  // clearInterval(gGoLeft);
-  // gGoRight = setInterval(
   shiftBoardLeft(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
-  // shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
-  // shiftBoardLeft(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
-  // );
-  // goLeft = true;
-  // }
-  // if (dir === 3) {
-  //   clearInterval(gGoRight);
-  //   clearInterval(gGoLeft);
-
-  //   gAliensTopRowIdx++;
-  //   gAliensBottomRowIdx++;
-  //   // renderBoard(gBoard);
-  //   shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
-  // }
+  // countAliens(gBoard);
 }
-/////////////////////////////////////////////Broken version of main main movements///////////////////////////////////////////////
-// function moveAliens(dir) {
-//   gGame.isOn = true;
 
-//   // gLeftCount++;
-//   // console.log(gLeftCount);
-//   if (gIsAlienFreeze) return;
-//   // shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);'
-//   if (dir === 1) {
-//     // console.log(gAliensTopRowIdx, gAliensBottomRowIdx);
-//     clearInterval(gGoRight);
-//     gGoLeft = setInterval(
-//       shiftBoardLeft,
-//       ALIEN_SPEED,
-//       gBoard,
-//       gAliensTopRowIdx,
-//       gAliensBottomRowIdx
-//     );
+// function countAliens(board) {
+//   for (var i = 0; i < board.length; i++) {
+//     var currRow = board[i];
+//     for (var j = 0; j < board[0].length; j++) {
+//       var currCell = currRow[j];
+//       if (currCell.gameObject === ALIEN) {
+//         gKillCount + 1;
+//       }
+//     }
 //   }
-//   if (dir === 2) {
-//     clearInterval(gGoLeft);
-//     gGoRight = setInterval(
-//       shiftBoardRight,
-//       ALIEN_SPEED,
-//       gBoard,
-//       gAliensTopRowIdx,
-//       gAliensBottomRowIdx
-//     );
-//     // goLeft = true;
-//   }
-//   if (dir === 3) {
-//     clearInterval(gGoRight);
-//     clearInterval(gGoLeft);
-
-//     gAliensTopRowIdx++;
-//     gAliensBottomRowIdx++;
-//     // renderBoard(gBoard);
-//     shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
-//   }
+//   console.log(gKillCount);
 // }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
