@@ -21,19 +21,27 @@ var gGame = {
 };
 var gSuperCount = 3;
 
+function startGame() {
+  gGame.isOn = true;
+}
+
 // Called when game loads
 function init() {
+  // gGame.isOn = true;
+  clearInterval(gIntervalAliens);
   gHero.pos = { i: 12, j: 5 };
   gScore = 0;
   gBoard = createBoard(gBoardLength, gBoardHeight);
   createAliens(gBoard, 3, 5);
   createHero(gBoard);
-  // gIntervalAliens = setInterval(moveAliens, ALIEN_SPEED);
+  gIntervalAliens = setInterval(moveAliens, ALIEN_SPEED);
   renderBoard(gBoard);
   updateScore(0);
   hideModal();
-  clearInterval(gGoLeft);
-  clearInterval(gGoRight);
+  var elPlay = document.querySelector('.play');
+  elPlay.style.display = 'block';
+  // clearInterval(gGoLeft);
+  // clearInterval(gGoRight);
 
   // console.log(gGame.aliensCount);
   // {
@@ -118,6 +126,8 @@ function gameOver(isWin = false) {
   createHero(gBoard);
   console.log('GAME OVER');
   gGame.isOn = false;
+  var elPlay = document.querySelector('.play');
+  elPlay.style.display = 'none';
   var elRestart = document.querySelector('.restart');
   elRestart.style.display = 'block';
   var elLost = document.querySelector('.modal');

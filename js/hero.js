@@ -4,7 +4,7 @@ var gLaserInterval;
 var gHero = { pos: { i: 12, j: 5 }, isShoot: false };
 var gLaserCount = -1;
 var gLaserPos = [];
-var gKillCounter = 0;
+var gIsNeighborsKill = false;
 // creates the hero and place it on board
 function createHero(board) {
   board[gHero.pos.i][gHero.pos.j].gameObject = HERO;
@@ -29,6 +29,9 @@ function onKeyDown(ev) {
       break;
     case ' ':
       shoot();
+    case 'n':
+      gIsNeighborsKill = true;
+      break;
   }
   // return moveHero(moveTo);
 }
@@ -37,11 +40,31 @@ function onKeyDown(ev) {
 function moveHero(dir) {
   if (!gGame.isOn) return;
   if (dir < 1 || dir > gBoard.length - 2) return;
-  gBoard[gHero.pos.i][dir].gameObject = HERO;
-  updateCell({ i: gHero.pos.i, j: dir }, HERO);
   gBoard[gHero.pos.i][gHero.pos.j].gameObject = null;
   updateCell(gHero.pos);
+  gBoard[gHero.pos.i][dir].gameObject = HERO;
+  updateCell({ i: gHero.pos.i, j: dir }, HERO);
   gHero.pos.j = dir;
+}
+
+function blowUpNgs(cellI, cellJ, board) {
+  // console.log(cellI);
+  // console.log(cellJ);
+  // console.log(board);
+  for (var i = cellI - 1; i <= cellI + 1; i++) {
+    if (i < 0 || i >= board.length) continue;
+    for (var j = cellJ - 1; j <= cellJ + 1; j++) {
+      if (i === cellI && j === cellJ) continue;
+      if (j < 0 || j >= board[i].length) continue;
+      if (board[i][j].gameObject === ALIEN) {
+        // console.log(board[i][j]);
+        board[i][j].gameObject === null;
+        // renderBoard(gBoard);
+      }
+    }
+    // console.table(gBoard);
+  }
+  gIsNeighborsKill = false;
 }
 
 // Sets an interval for shutting (blinking) the laser up towards aliens
@@ -80,7 +103,7 @@ function blinkLaser(pos) {
   }
 
   // if (gBoard[nextLaserPos.i + 1][nextLaserPos.j].gameObject === ALIEN) {
-  //   killAlien({ i: nextLaserPos.i + 1, j: nextLaserPos.j });
+  //   handleAlienHit({ i: nextLaserPos.i + 1, j: nextLaserPos.j });
   // }
 
   if (i === 0) {
@@ -100,24 +123,18 @@ function blinkLaser(pos) {
   }
 }
 
-function handleAlienHit(pos) {
-  // var aliens = gAliens.slice();
-  console.log(pos);
-  // gScore += 10;
-  updateScore(10);
-  gLaserPos = [];
-  gLaserCount = -1;
-  clearInterval(gLaserInterval);
-  gHero.isShoot = false;
-  gBoard[pos.i][pos.j].gameObject = null;
-  updateCell({ i: pos.i, j: pos.j });
-  for (var i = 0; i < gAliens.length; i++) {
-    var currAlien = gAliens[i];
-    if (currAlien.i === pos.i && currAlien.j === pos.j) {
-      console.log(currAlien);
-      gAliens.splice(gAliens.indexOf(currAlien), 1);
-    }
-  }
-  console.log(gAliens);
-  console.log(gGame.aliensCount);
-}
+// function handleAlienHit(pos) {
+//   updateScore(10);
+//   gLaserPos = [];
+//   gLaserCount = -1;
+//   clearInterval(gLaserInterval);
+//   gHero.isShoot = false;
+//   if (!gIsNeighborsKill) {
+//     gBoard[pos.i][pos.j].gameObject = null;
+//     updateCell({ i: pos.i, j: pos.j });
+//     console.log(gIsNeighborsKill);
+//     console.log(pos);
+//   } else {
+//     blowUpNgs(nextLaserPos.i, nextLaserPos.j, gBoard);
+//   }
+// }

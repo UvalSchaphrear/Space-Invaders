@@ -1,5 +1,5 @@
 body {
-  background-image: url(/img/6.jpg);
+  background-image: url("../img/6.jpg");
   background-size: cover;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -12,7 +12,10 @@ body {
 table {
   margin-top: 100px;
   margin: auto;
+  /* padding-bottom: 65px; */
+  padding-top: 60px;
 }
+
 h1 {
   color: rgb(255, 244, 199);
   text-shadow: 2px 2px darkgray;
@@ -70,9 +73,11 @@ h1 {
   background-color: rgba(238, 16, 16, 0.05);
 }
 
-.play {
+button.play {
   height: 40px;
   width: 80px;
   right: auto;
   color: black;
+  position: absolute;
+  left: 48%;
 }

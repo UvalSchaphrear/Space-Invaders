@@ -10,15 +10,15 @@
   <body onkeydown="onKeyDown(event)" onload="init()">
     <h1>Defeat the EVIL invaders from BEYOND SPACE!</h1>
     <div class="score">Score: <span class="counter">0</span></div>
+    <div>
+      <button class="play" onclick="startGame()">Play!</button>
+    </div>
     <table>
       <tbody class="board"></tbody>
       <div class="restart">
         <span class="modal"></span>
-        <button class="button" onclick="window.location.reload()">
-          Restart
-        </button>
+        <button class="button" onclick="init()">Restart</button>
       </div>
-      <button class="play" onclick="moveAliens(1)">Play!</button>
     </table>
     <script src="js/util.js"></script>
     <script src="js/game.js"></script>
