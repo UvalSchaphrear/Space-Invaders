@@ -14,6 +14,7 @@ table {
   margin: auto;
   /* padding-bottom: 65px; */
   padding-top: 60px;
+  display: inline-table;
 }
 
 h1 {
@@ -81,4 +82,25 @@ button.play {
   color: black;
   position: absolute;
   left: 48%;
+}
+
+.instructions {
+  color: rgb(255, 8, 0);
+  font-family: monospace;
+  text-shadow: 2px 2px rgb(0, 49, 95);
+  font-size: 22px;
+  margin-bottom: 5px;
+  width: 180px;
+  position: absolute;
+  left: 10px;
+  display: block;
+  left: 50px;
+  text-align: center;
+  top: 250px;
+  float: left;
+}
+
+p span {
+  color: yellow;
+  font-family: fantasy;
 }

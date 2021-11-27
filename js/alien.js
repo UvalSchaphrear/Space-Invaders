@@ -1,8 +1,6 @@
 'use strict';
 const ALIEN_SPEED = 900;
 var gIntervalAliens;
-var gLeftCount = 0;
-var gKillCount = 0;
 
 // The following two variables represent the part of the matrix (some rows)
 // that we should shift (left, right, and bottom)
@@ -19,17 +17,13 @@ function createAliens(board, startIdx, endIdx) {
       var currCell = board[i][j - 1];
       if (i < startIdx + 1 && j > endIdx) {
         currCell.gameObject = ALIEN;
-        // updateCell({ i, j }, ALIEN);
         gGame.aliensCount += 1;
       }
     }
   }
-  // console.log(gAliens);
 }
 
 function handleAlienHit(pos) {
-  // console.log(gIsNeighborsKill);
-  // console.log(gGame.aliensCount);
   updateScore(10);
   gLaserPos = [];
   gLaserCount = -1;
@@ -37,7 +31,6 @@ function handleAlienHit(pos) {
   gHero.isShoot = false;
   gBoard[pos.i][pos.j].gameObject = null;
   checkWin();
-  // gBoard[pos.i][pos.j].deadAlien = true;
   updateCell({ i: pos.i, j: pos.j });
   if (gIsNeighborsKill) {
     blowUpNgs(pos.i, pos.j, gBoard);
@@ -58,7 +51,6 @@ function blowUpNgs(cellI, cellJ, board) {
         checkWin();
       }
     }
-    // console.table(gBoard);
   }
   gIsNeighborsKill = false;
 }
@@ -71,8 +63,6 @@ function shiftBoardLeft(board, fromI, toI) {
       var alienPos = { i, j };
       if (currRow[j].gameObject === ALIEN) {
         if (alienPos.j === 1) {
-          // clearInterval(gGoLeft);
-          // gGoLeft = false;
           clearInterval(gIntervalAliens);
           gIntervalAliens = setInterval(
             shiftBoardRight,
@@ -83,12 +73,9 @@ function shiftBoardLeft(board, fromI, toI) {
           );
           return;
         }
-        // console.log('going left', gGoLeft);
 
         gBoard[alienPos.i][alienPos.j - 1].gameObject = ALIEN;
-        // updateCell({ i: alienPos.i, j: alienPos.j - 1 }, ALIEN);
         gBoard[alienPos.i][alienPos.j].gameObject = null;
-        // updateCell(alienPos);
         renderBoard(gBoard);
       }
     }
@@ -96,14 +83,11 @@ function shiftBoardLeft(board, fromI, toI) {
 }
 
 function shiftBoardRight(board, fromI, toI) {
-  // clearInterval(gGoLeft);
   for (var i = fromI; i <= toI; i++) {
     var currRow = board[i];
-    // for (var j = 0; j > board.length; j++) {
     for (var j = board.length - 1; j >= 0; j--) {
       if (currRow[j].gameObject === ALIEN) {
         var alienPos = { i, j };
-        // console.log(gGoLeft);
         if (alienPos.j === board.length - 2) {
           clearInterval(gIntervalAliens);
           return shiftBoardDown(
@@ -112,17 +96,13 @@ function shiftBoardRight(board, fromI, toI) {
             gAliensBottomRowIdx++
           );
         }
-        // console.log('going right', gGoRight);
 
         gBoard[alienPos.i][alienPos.j + 1].gameObject = ALIEN;
-        // updateCell({ i: alienPos.i, j: alienPos.j + 1 }, ALIEN);
         gBoard[alienPos.i][alienPos.j].gameObject = null;
-        // updateCell(alienPos);
         renderBoard(gBoard);
       }
     }
   }
-  // console.log(gAliensMove); // this and gAliens should be merged and function the same way
 }
 
 function shiftBoardDown(board, fromI, toI) {
@@ -150,20 +130,16 @@ function shiftBoardDown(board, fromI, toI) {
       }
     }
   }
-
-  // moveAliens(1);
 }
 // runs the interval for moving aliens side to side and down
 // it re-renders the board every time
 // when the aliens are reaching the hero row - interval stops
-// moveAliens();
 
 function moveAliens() {
   if (gIsAlienFreeze) return;
   if (!gGame.isOn) return;
 
   shiftBoardLeft(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
-  // countAliens(gBoard);
 }
 
 function checkWin() {
