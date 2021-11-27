@@ -93,9 +93,7 @@ button.play {
   width: 180px;
   position: absolute;
   left: 200px;
-  text-align: center;
   top: 250px;
-  float: left;
   display: block;
 }
 
