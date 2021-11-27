@@ -27,8 +27,9 @@ function startGame() {
   gGame.isOn = true;
   hideModal();
   setTimeout(function () {
-    gCandyInterval = setInterval(placeCandy, 10000);
-  }, 1000);
+    clearInterval(gCandyInterval);
+    gCandyInterval = setInterval(placeCandy, 5000);
+  }, 5000);
 }
 
 // Called when game loads
