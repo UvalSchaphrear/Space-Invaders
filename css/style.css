@@ -92,12 +92,11 @@ button.play {
   margin-bottom: 5px;
   width: 180px;
   position: absolute;
-  left: 10px;
-  display: block;
-  left: 50px;
+  left: 200px;
   text-align: center;
   top: 250px;
   float: left;
+  display: block;
 }
 
 p span {
