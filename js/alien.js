@@ -36,6 +36,7 @@ function handleAlienHit(pos) {
   clearInterval(gLaserInterval);
   gHero.isShoot = false;
   gBoard[pos.i][pos.j].gameObject = null;
+  checkWin();
   // gBoard[pos.i][pos.j].deadAlien = true;
   updateCell({ i: pos.i, j: pos.j });
   if (gIsNeighborsKill) {
@@ -54,6 +55,7 @@ function blowUpNgs(cellI, cellJ, board) {
       if (j < 0 || j >= board[i].length) continue;
       if (board[i][j].gameObject === ALIEN) {
         board[i][j].gameObject = null;
+        checkWin();
       }
     }
     // console.table(gBoard);
@@ -157,22 +159,18 @@ function shiftBoardDown(board, fromI, toI) {
 // moveAliens();
 
 function moveAliens() {
-  // gGame.isOn = true;
+  if (gIsAlienFreeze) return;
   if (!gGame.isOn) return;
 
   shiftBoardLeft(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx);
   // countAliens(gBoard);
 }
 
-// function countAliens(board) {
-//   for (var i = 0; i < board.length; i++) {
-//     var currRow = board[i];
-//     for (var j = 0; j < board[0].length; j++) {
-//       var currCell = currRow[j];
-//       if (currCell.gameObject === ALIEN) {
-//         gKillCount + 1;
-//       }
-//     }
-//   }
-//   console.log(gKillCount);
-// }
+function checkWin() {
+  for (var i = 0; i < gBoard.length; i++) {
+    for (var j = 0; j < gBoard[0].length; j++) {
+      if (gBoard[i][j].gameObject === ALIEN) return;
+    }
+  }
+  gameOver(true);
+}

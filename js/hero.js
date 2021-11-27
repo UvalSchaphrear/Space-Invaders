@@ -63,6 +63,16 @@ function moveHero(dir) {
   console.log(gIsSuper);
   if (!gGame.isOn) return;
   if (dir < 1 || dir > gBoard.length - 2) return;
+  if (gBoard[gHero.pos.i][dir].gameObject) {
+    updateScore(50);
+    gIsAlienFreeze = true;
+    clearInterval(gIntervalAliens);
+    setTimeout(function () {
+      gIsAlienFreeze = false;
+      gIntervalAliens = setInterval(moveAliens, ALIEN_SPEED);
+    }, 5000);
+  }
+
   gBoard[gHero.pos.i][gHero.pos.j].gameObject = null;
   updateCell(gHero.pos);
   gBoard[gHero.pos.i][dir].gameObject = HERO;
@@ -85,6 +95,7 @@ function shoot() {
       gIsSuper = false;
       LASER_SPEED = 80;
       LASER = '❗';
+      gSuperCount = 4;
     }
   }
   gLaserInterval = setInterval(blinkLaser, LASER_SPEED, gHero.pos);

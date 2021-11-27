@@ -8,6 +8,7 @@ const ALIEN = '🐙';
 const GROUND = 'GROUND';
 const SPACE = 'SPACE';
 const WALL = 'WALL';
+const CANDY = '🍫';
 var LASER = '❗';
 
 // Matrix of cell objects. e.g.: {type: SKY, gameObject: ALIEN}
@@ -20,14 +21,22 @@ var gGame = {
   aliensCount: 0,
 };
 var gSuperCount = 3;
+var gCandyInterval;
 
 function startGame() {
   gGame.isOn = true;
+  hideModal();
+  setTimeout(function () {
+    gCandyInterval = setInterval(function () {
+      placeCandy();
+    }, 10000);
+  }, 5000);
 }
 
 // Called when game loads
 function init() {
   clearInterval(gIntervalAliens);
+  clearInterval(gCandyInterval);
   gHero.pos = { i: 12, j: 5 };
   gScore = 0;
   gBoard = createBoard(gBoardLength, gBoardHeight);
@@ -46,6 +55,20 @@ function hideModal() {
   var elRestart = document.querySelector('.restart');
   elRestart.style.display = 'none';
 }
+
+function placeCandy() {
+  var randomCell = getEmptyLocation(gBoard);
+  if (!randomCell) return;
+  gBoard[randomCell.i][randomCell.j].gameObject = CANDY;
+  updateCell(randomCell, CANDY);
+  setTimeout(function () {
+    if (gBoard[randomCell.i][randomCell.j].gameObject !== gHero) {
+      gBoard[randomCell.i][randomCell.j].gameObject = null;
+      updateCell(randomCell);
+    }
+  }, 5000);
+}
+
 // Create and returns the board with aliens on top, ground at bottom
 // use the functions: createCell, createHero, createAliens
 
@@ -87,6 +110,8 @@ function renderBoard(board) {
 
       if (cell.gameObject === HERO) {
         strHTML += HERO;
+      } else if (cell.gameObject === CANDY) {
+        strHTML += CANDY;
       } else if (cell.gameObject === ALIEN) {
         strHTML += ALIEN;
       }
